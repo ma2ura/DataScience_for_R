@@ -11,6 +11,7 @@ mu = 0.045 # 平均
 r = 0.0 # 割引率 ここでは思い切って0と仮定
 samples = 100000# 試行回数 PCが非力なら少なめに
 
+
 # シミュレーション
 CFmat <- matrix(NA_real_,nrow=year,ncol=samples) # 空の10*100000行列
 for (m in 1:year){ # シミュレーション
@@ -24,7 +25,7 @@ CF <- CFmat %>%
   as_tibble() %>%  # tibble化 
   dplyr::mutate(
     FY = c(1:10) # 年のデータを追加
-  ) %>% 
+  ) %>% # やたら遅い?
   tidyr::pivot_longer(cols=-FY, names_to = "trial", values_to ="amount")# ワイドをロング
 
 # 図の見た目を設定
