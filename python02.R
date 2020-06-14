@@ -103,8 +103,18 @@ alpha = 0.05 # 信頼度
 # サンプルサイズsizeの算出 ここでは 57 を返す
 size <- sample_poisson(N, pm, ke, alpha)
 
+# グラフで確認
+df2 <- data.frame(
+  n <- 0:100,
+  pois <- dpois(0,I(n*pt)),
+  cond <- ifelse(pois > 0.05, "insufficient", "sufficient")
+)
+ggplot(df2, aes(n,pois, group=cond, fill = cond)) + geom_bar(stat="identity") + geom_hline(yintercept = 0.05)
 
-# サンプルをランダムに並び替え
+
+# サンプリング
+
+# ランダムに並び替え
 df_re <- df_poi[sample(nrow(df_poi)),]
 
 #サンプリング区間の算定
