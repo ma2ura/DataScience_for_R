@@ -1,6 +1,4 @@
 library(tidyverse)
-library(ggthemes)
-library(patchwork)
 
 set.seed(123) # 乱数を固定
 
@@ -30,8 +28,7 @@ CF <- CFmat %>%
 
 # 図の見た目を設定
 mystyle <- list(
-theme_calc(base_family = "HiraMaruProN-W4"),
-scale_colour_calc()
+theme_calc(base_family = "HiraMaruProN-W4") # mac用
 )
 
 # 試行1回目のCF
@@ -72,7 +69,6 @@ print(g3)
 library("ggridges")
 g <- ggplot(CF,aes(x=amount, y = FY, fill=FY))
 g <- g + geom_density_ridges(aes(point_color=FY, point_fill=FY), alpha = 0.3)
-#g <- g + scale_point_color_hue(l = 40) #+ scale_point_size_continuous(range = c(1,10))
 g4 <- g   + coord_flip() + mystyle + theme(legend.position = 'none')
 print(g4)
 
