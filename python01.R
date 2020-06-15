@@ -28,7 +28,7 @@ CF <- CFmat %>%
 
 # 図の見た目を設定
 mystyle <- list(
-theme_calc(base_family = "HiraMaruProN-W4") # mac用
+  theme_bw(base_family = "HiraMaruProN-W4") # mac用
 )
 
 # 試行1回目のCF
@@ -63,12 +63,4 @@ g3 <- ggplot(df_NPV, aes(NPV)) + geom_histogram(binwidth=25,fill="lightblue", co
 g3 <- g3 + ylab("Simulated NPV") + mystyle
 g3 <- g3 + geom_vline(xintercept=sum(100*DF[2:11]), colour="red", size=1)
 print(g3)
-
-
-# 年ごとの分布
-library("ggridges")
-g <- ggplot(CF,aes(x=amount, y = FY, fill=FY))
-g <- g + geom_density_ridges(aes(point_color=FY, point_fill=FY), alpha = 0.3)
-g4 <- g   + coord_flip() + mystyle + theme(legend.position = 'none')
-print(g4)
 
