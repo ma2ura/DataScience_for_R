@@ -11,10 +11,10 @@ samples = 100000# 試行回数 PCが非力なら少なめに
 
 
 # シミュレーション
-CFmat <- matrix(NA_real_,nrow=year,ncol=samples) # 空の10*100000行列
+CFmat <- matrix(NA_real_, nrow = year, ncol = samples) # 空の10*100000行列
 for (m in 1:year){ # シミュレーション
   for (n in 1:samples){
-    CFmat[m,n] <- 100 * rlnorm(1,mu,sigma)
+    CFmat[m,n] <- 100 * rlnorm(1, mu, sigma)
   }
 }
 
@@ -24,7 +24,7 @@ CF <- CFmat %>%
   dplyr::mutate(
     FY = c(1:10) # 年のデータを追加
   ) %>% # やたら遅い?
-  tidyr::pivot_longer(cols=-FY, names_to = "trial", values_to ="amount")# ワイドをロング
+  tidyr::pivot_longer(cols = -FY, names_to = "trial", values_to = "amount") # ワイドをロング
 
 # 図の見た目を設定
 mystyle <- list(
@@ -34,7 +34,7 @@ mystyle <- list(
 # 試行1回目のCF
 CF_V1 <- CF %>% 
   dplyr::filter(trial == "V1") # 第1回試行を抽出
-g <- ggplot(CF_V1, aes(x=FY, y=amount)) + geom_bar(stat = "identity",fill="lightblue", colour = "blue")
+g <- ggplot(CF_V1, aes(x = FY, y = amount)) + geom_bar(stat = "identity", fill = "lightblue", colour = "blue")
 g <- g + ylab("1st trial's Cash Flow") + xlab("year") + mystyle
 print(g)
 
@@ -47,7 +47,7 @@ print(g2)
 # 割引因子の作成
 DF <- rep(1,10) # 1を10個
 for (t in 1:year) {
-  DF[t+1] <- DF[t]*exp(-0.05)
+  DF[t+1] <- DF[t] * exp(-0.05)
 }
 
 # 10年分のCFを割引現在価値に
@@ -58,9 +58,9 @@ df_NPV <- CF %>%
   dplyr::summarise(NPV = sum(DCF)) # 試行ごとにDCFを合計しNPVを計算
 
 # 10万回の試行で作られたNPVのヒストグラム
-xinter <- sum(100*DF[2:11])
-g3 <- ggplot(df_NPV, aes(NPV)) + geom_histogram(binwidth=25,fill="lightblue", colour = "blue")
+xinter <- sum(100 * DF[2:11])
+g3 <- ggplot(df_NPV, aes(NPV)) + geom_histogram(binwidth=25, fill = "lightblue", colour = "blue")
+g3 <- g3 + geom_vline(xintercept=sum(100 * DF[2:11]), colour = "red", size = 1)
 g3 <- g3 + ylab("Simulated NPV") + mystyle
-g3 <- g3 + geom_vline(xintercept=sum(100*DF[2:11]), colour="red", size=1)
 print(g3)
 
